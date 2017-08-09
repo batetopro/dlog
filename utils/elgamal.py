@@ -70,19 +70,3 @@ def decode_message(number, p):
 def get_blocks(string, length):
     return list((string[0+i:length+i] for i in range(0, len(string), length)))
 
-
-if __name__ == "__main__":
-    from utils import period
-
-    sk = 2
-    g = 7
-    p = 12812033272825343573241964822155518150863989454698536013844541575691016995569569178157355531014735958545538469803461721165865131357287826603167548085422432164852828763636499492253106094452179644999836997538091041625475400951445399367587477344297734846220209516778109053851098073160657134265949614899121092961731911201
-    pk = modular_exponentiation(g, sk, p)
-    q = (p - 1) / 2
-
-    print p, g, q
-
-    enc = encrypt_string(p,q,g,pk, "O kolko sym prost 2017")
-    print enc
-    dec = decrypt_string(p,q,g,sk,enc)
-    print dec
