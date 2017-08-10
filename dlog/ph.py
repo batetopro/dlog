@@ -48,13 +48,11 @@ class PohligHellman:
         return self.dlog.solve(g, h, p, q)
 
     def solve(self, g, h, p, q, F):
-        if g == 1 or h == 1:
-            return 0
-        if q == 2:
-            return 1
-
         self.g = g
         F.sort(key=lambda x: x[0])
+
+        # we have interest in the Group's order
+        q = p - 1
 
         parts = []
         for f in F:
@@ -66,12 +64,7 @@ class PohligHellman:
             for j in range(1,f[1]):
                 gamma = (gamma * modular_exponentiation(g, levels[j-1] * pow(f[0], j - 1), p)) % p
                 P = pow(f[0], j+1)
-
-                if (q / P) * P != q:
-                    B = modular_exponentiation((h * modinv(gamma, p)) % p, (p-1) / pow(f[0], j + 1), p)
-                else:
-                    B = modular_exponentiation((h * modinv(gamma, p)) % p, q / pow(f[0], j+1), p)
-
+                B = modular_exponentiation((h * modinv(gamma, p)) % p, q / P, p)
                 levels.append(self.find(A, B, p, f[0]))
 
             flow = sum([l * pow(f[0],k) for k, l in enumerate(levels)])
